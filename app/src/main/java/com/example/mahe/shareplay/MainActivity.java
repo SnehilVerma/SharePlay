@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<Song> songList;
+<<<<<<< HEAD
     private RecyclerView songView;
     Button button;
     SongAdapter songAdt;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     Song songs[];
 
+=======
+    private ListView songView;
+>>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         songView.setItemAnimator(new DefaultItemAnimator());
         songView.setAdapter(songAdt);
 
+<<<<<<< HEAD
 
         // button=(Button)findViewById(R.id.button);
 
@@ -65,16 +71,48 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.icon_share);
+=======
+        //selecting the checked items from listview
+
+
+       /* SparseBooleanArray checked = songView.getCheckedItemPositions();
+        int size = checked.size(); // number of name-value pairs in the array
+        for (int i = 0; i < size; i++) {
+            int key = checked.keyAt(i);
+            boolean value = checked.get(key);
+           // if (value)
+
+
+               // doSomethingWithSelectedIndex(key);
+        }*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+>>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 shareIt(view);
 
             }
+        });*/
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                //startActivity(intent);
+
+                shareIt();
+            }
         });
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
 
 
     public void shareIt(View view) {
@@ -137,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+=======
+    public void shareIt() {
+//sharing implementation here
+>>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 
@@ -146,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
+<<<<<<< HEAD
 
         */
 
@@ -156,5 +200,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
 
     }
+=======
+>>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
 }
 
