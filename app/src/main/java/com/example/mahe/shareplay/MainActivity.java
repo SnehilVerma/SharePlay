@@ -1,7 +1,13 @@
 package com.example.mahe.shareplay;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +19,14 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
 import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -23,21 +34,39 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+
+
+
 public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<Song> songList;
-<<<<<<< HEAD
+
+
     private RecyclerView songView;
-    Button button;
+
     SongAdapter songAdt;
+    StringBuilder result;
 
 
     Song songs[];
 
-=======
-    private ListView songView;
->>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
+    Document document;
+    String FILE;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,58 +89,35 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         songView.setLayoutManager(mLayoutManager);
         songView.setItemAnimator(new DefaultItemAnimator());
+        songAdt.notifyDataSetChanged();
         songView.setAdapter(songAdt);
 
-<<<<<<< HEAD
 
-        // button=(Button)findViewById(R.id.button);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.icon_share);
-=======
-        //selecting the checked items from listview
 
-
-       /* SparseBooleanArray checked = songView.getCheckedItemPositions();
-        int size = checked.size(); // number of name-value pairs in the array
-        for (int i = 0; i < size; i++) {
-            int key = checked.keyAt(i);
-            boolean value = checked.get(key);
-           // if (value)
-
-
-               // doSomethingWithSelectedIndex(key);
-        }*/
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
->>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareIt(view);
-
-            }
-        });*/
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Click action
                 //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
                 //startActivity(intent);
+                new statusCheck().execute();
 
-                shareIt();
+
             }
         });
 
 
+
+
+
     }
+
 
 
     @Override
@@ -147,39 +153,142 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
+
+    private class statusCheck extends AsyncTask<Void,Void,StringBuilder>{
 
 
-    public void shareIt(View view) {
-        //sharing implementation here
+        ProgressDialog mProgressDialog;
 
-        StringBuilder result = new StringBuilder();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-        for (int i = 0; i < songAdt.mCheckStates.size(); i++) {
-            if (songAdt.mCheckStates.get(i) == true) {
-
-                result.append(songList.get(i).getTitle());
-                result.append("\n");
-            }
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+            // Set progressdialog title
+            mProgressDialog.setTitle("Generating a shareable PDF");
+            // Set progressdialog message
+            mProgressDialog.setMessage("Almost there!");
+            mProgressDialog.setIndeterminate(false);
+            // Show progressdialog
+            mProgressDialog.show();
 
         }
 
-        displayToast(result);
+        @Override
+        protected StringBuilder doInBackground(Void... params) {
+            result = new StringBuilder();
+
+
+
+            ArrayList<Song> songs= ((SongAdapter)songAdt).getSongList();
+
+
+            for (int i = 0; i < songs.size(); i++) {
+                Song singleSong = songs.get(i);
+                if (singleSong.getIsSelected() == true) {
+
+                    result.append(singleSong.getTitle().toString());
+                    result.append("\n");
+
+
+                }
+
+            }
+
+
+            try {
+                Thread.sleep(2000);
+
+
+                FILE = Environment.getExternalStorageDirectory().toString()
+                        + "/PDF/" + "playlist.pdf";
+
+
+                document = new Document(PageSize.A4);
+
+
+                String root = Environment.getExternalStorageDirectory().toString();
+                File myDir = new File(root + "/PDF");
+                myDir.mkdirs();
+
+                try {
+                    PdfWriter.getInstance(document, new FileOutputStream(FILE));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                document.open();
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+
+
+        @Override
+        protected void onPostExecute(StringBuilder result) {
+
+
+
+            mProgressDialog.dismiss();
+            displayToast(result);
 
 
 
 
-        /*
-        Snackbar.make(view, result, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+
+            addMetaData(document);
 
 
 
 
-=======
+
+
+            try{
+                addTitlePage(document);
+            }catch (Exception e){
+                e.printStackTrace();
+
+            }
+
+            document.close();
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ////////////////////////// DO the sharing part now /////////////////////////////
+
+    /*
+
     public void shareIt() {
 //sharing implementation here
->>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
+
+
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 
@@ -189,18 +298,63 @@ public class MainActivity extends AppCompatActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
-<<<<<<< HEAD
+
 
         */
 
-    }
+
 
 
     public void displayToast(StringBuilder result){
         Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
 
     }
-=======
->>>>>>> a2d3981009aeafe29d029d9e2afccb283a00467e
+
+
+    public void addMetaData(Document document)
+    {
+        document.addTitle("PLAYLIST");
+        document.addSubject("LOVE MUSIC");
+
+    }
+
+
+    public void addTitlePage(Document document) throws DocumentException{
+
+        Paragraph para = new Paragraph();
+
+        Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD );
+        Paragraph prHead = new Paragraph();
+        prHead.setFont(titleFont);
+        prHead.setAlignment(Element.ALIGN_CENTER);
+        prHead.add("PLAYLIST \n \n \n");
+        document.add(prHead);
+
+        String finres[]=result.toString().split("\n");
+
+        Font paraFont = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD );
+        para.setFont(paraFont);
+
+        for(int i=0;i<finres.length;i++){
+            para.add(i+1 + ")" + " ");
+            para.add(finres[i]);
+            para.add("\n");
+        }
+
+
+
+        document.add(para);
+
+
+    }
+
+
+
+
+
+
+
+
+
 }
 

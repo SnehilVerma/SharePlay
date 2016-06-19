@@ -12,19 +12,20 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 /**
  * Created by MAHE on 6/17/2016.
  */
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> implements CompoundButton.OnCheckedChangeListener {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
-    SparseBooleanArray mCheckStates;
+    //SparseBooleanArray mCheckStates;
 
 
     private ArrayList<Song> songs;
-    private LayoutInflater songInf;
+
 
 
 
@@ -53,8 +54,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
     public SongAdapter(ArrayList<Song> theSongs){
         songs=theSongs;
-        //songInf=LayoutInflater.from(c);
-        mCheckStates=new SparseBooleanArray(theSongs.size());
+
+
     }
 
 
@@ -66,6 +67,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout,parent,false);
 
+
+
         return new MyViewHolder(itemView);
 
 
@@ -73,17 +76,30 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Song song=songs.get(position);
 
         holder.title.setText(song.getTitle());
         holder.artist.setText(song.getArtist());
 
+        holder.checkBox.setChecked(song.getIsSelected());
+        holder.checkBox.setTag(song);
 
 
-        holder.checkBox.setTag(position);
-        holder.checkBox.setChecked(mCheckStates.get(position,false));
-        holder.checkBox.setOnCheckedChangeListener(this);
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v;
+                Song song = (Song) cb.getTag();
+
+                song.setSelected(cb.isChecked());
+                songs.get(position).setSelected(cb.isChecked());
+            }
+        });
+
+
+
+
 
 
 
@@ -108,75 +124,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
 
-    public boolean isChecked(int position){
-        return mCheckStates.get(position,false);
+
+
+
+
+
+    public ArrayList<Song> getSongList() {
+        return songs;
     }
-
-
-
-
-    public void setChecked(int position,boolean isChecked){
-        mCheckStates.put(position,isChecked);
-    }
-
-
-
-
-
-    public void toggle(int position){
-        setChecked(position,!isChecked(position));
-    }
-
-
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-        mCheckStates.put((Integer)buttonView.getTag(),isChecked);
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //map to song layout
-        LinearLayout songLay = (LinearLayout)songInf.inflate(R.layout.song, parent, false);
-        //get title and artist views
-        TextView songView = (TextView)songLay.findViewById(R.id.song_title);
-        TextView artistView = (TextView)songLay.findViewById(R.id.song_artist);
-        CheckBox checkBox=(CheckBox)songLay.findViewById(R.id.checkBox);
-        //get song using position
-        Song currSong = songs.get(position);
-        //get title and artist strings
-
-        songView.setText(currSong.getTitle());
-        artistView.setText(currSong.getArtist());
-
-        // checkbox handling//
-        checkBox.setTag(position);
-        checkBox.setChecked(mCheckStates.get(position,false));
-        checkBox.setOnCheckedChangeListener(this);
-
-
-
-        //set position as tag
-        songLay.setTag(position);
-
-        return songLay;
-    }
-
-    */
-
 
 
 }
