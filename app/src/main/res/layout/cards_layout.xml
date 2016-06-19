@@ -26,15 +26,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:textColor="#000000"
         android:scrollHorizontally="false"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
+        />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="select"
+
         android:id="@+id/checkBox"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
@@ -49,7 +53,10 @@
         android:layout_below="@id/song_title"
         android:scrollHorizontally="false"
         android:textColor="#000000"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:layout_marginRight="8dp"
+        android:singleLine="true"
+        android:ellipsize="end"/>
 
 
 

@@ -20,8 +20,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     Document document;
     String FILE;
+    String line;
 
 
 
@@ -77,12 +84,16 @@ public class MainActivity extends AppCompatActivity {
 
         getSongList();
 
+        //sorting acc to title names
+
 
         Collections.sort(songList, new Comparator<Song>() {
             public int compare(Song a, Song b) {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
+
+        //Recycler View
 
         songAdt = new SongAdapter(songList);
 
@@ -96,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //sahre button
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.icon_share);
@@ -112,13 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -172,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
             // Show progressdialog
             mProgressDialog.show();
 
+
+
         }
 
         @Override
@@ -190,23 +198,16 @@ public class MainActivity extends AppCompatActivity {
                     result.append(singleSong.getTitle().toString());
                     result.append("\n");
 
-
                 }
 
             }
-
-
             try {
                 Thread.sleep(2000);
-
 
                 FILE = Environment.getExternalStorageDirectory().toString()
                         + "/PDF/" + "playlist.pdf";
 
-
                 document = new Document(PageSize.A4);
-
-
                 String root = Environment.getExternalStorageDirectory().toString();
                 File myDir = new File(root + "/PDF");
                 myDir.mkdirs();
@@ -232,60 +233,49 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(StringBuilder result) {
 
-
-
             mProgressDialog.dismiss();
-            displayToast(result);
-
-
-
-
-
+            //displayToast(result);
             addMetaData(document);
-
-
-
-
 
 
             try{
                 addTitlePage(document);
+
             }catch (Exception e){
                 e.printStackTrace();
-
             }
+
+            /*File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                    +"/PDF/playlist.pdf");
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);*/
+
+
 
             document.close();
 
+
+
+            Toast t = Toast.makeText(MainActivity.this,result, Toast.LENGTH_SHORT);
+            t.show();
+            Intent i=new Intent(getApplicationContext(),Results.class);
+            Bundle extras=new Bundle();
+            extras.putString("list", String.valueOf(result));
+
+            i.putExtras(extras);
+            startActivity(i);
 
         }
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ////////////////////////// DO the sharing part now /////////////////////////////
 
-    /*
 
-    public void shareIt() {
+
+   /* public void shareIt() {
 //sharing implementation here
 
 
@@ -293,14 +283,14 @@ public class MainActivity extends AppCompatActivity {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 
         sharingIntent.setType("text/plain");
-        String shareBody = "enter text to send";
+        String shareBody = list;
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
+*/
 
-        */
 
 
 
@@ -347,14 +337,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public String read_file(Context context, String playlist) {
+        try {
+            FileInputStream fis = context.openFileInput(playlist);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
 
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            return "";
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        } catch (IOException e) {
+            return "";
+        }
 
-
-
-
-
+        //displayToast(line);
+    }
 
 
 
 }
-

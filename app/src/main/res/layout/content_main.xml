@@ -5,7 +5,7 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
-              android:background="#FF330000"
+              android:background="@color/highlighted_text_material_light"
               tools:context=".MainActivity" >
 
     <android.support.v7.widget.RecyclerView
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_marginTop="50dp"
         android:scrollbars="vertical"
-        android:background="@color/cardview_dark_background"/>
+        android:background="@color/cardview_light_background"/>
 
 
 
