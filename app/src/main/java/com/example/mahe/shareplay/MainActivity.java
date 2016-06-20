@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             mProgressDialog.dismiss();
-            displayToast(result);
+            //displayToast(result);
 
 
 
@@ -254,6 +254,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
 
             }
+
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/PDF/playlist.pdf");
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
 
             document.close();
 
