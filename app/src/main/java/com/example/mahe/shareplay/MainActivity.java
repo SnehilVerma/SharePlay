@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.AsyncListUtil;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
                 //startActivity(intent);
                 new statusCheck().execute();        //begin the async task to generate a pdf and and start result activity.
+                new loadIntent().execute();
 
 
 
@@ -207,11 +209,37 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private class loadIntent extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent i = new Intent(getApplicationContext(), Results.class);
+            Bundle extras = new Bundle();
+            extras.putString("list", String.valueOf(result));
+
+            i.putExtras(extras);
+            startActivity(i);
+
+
+
+        }
+    }
 
 
 
 
-    private class statusCheck extends AsyncTask<Void,Void,StringBuilder> {
+
+    private class statusCheck extends AsyncTask<Void,Void,Void> {
 
 
         @Override
@@ -222,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected StringBuilder doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             result = new StringBuilder();
 
 
@@ -256,13 +284,13 @@ public class MainActivity extends AppCompatActivity {
 
             document.open();
 
-
-            return result;
+            return null;
+            //return result;
         }
 
 
         @Override
-        protected void onPostExecute(StringBuilder result) {
+        protected void onPostExecute(Void aVoid) {
 
 
 
@@ -280,17 +308,23 @@ public class MainActivity extends AppCompatActivity {
 
             document.close();
 
-
+            /*
             Intent i = new Intent(getApplicationContext(), Results.class);
             Bundle extras = new Bundle();
             extras.putString("list", String.valueOf(result));
 
             i.putExtras(extras);
             startActivity(i);
-
+            */
 
         }
     }
+
+
+
+
+
+
 
 
     public void addMetaData(Document document)
