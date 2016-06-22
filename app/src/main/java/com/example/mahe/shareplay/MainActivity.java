@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +21,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,14 +62,25 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView songView;
 
-    SongAdapter songAdt;
+
+    SongAdapter songAdt;    // adapter for Song model.
     StringBuilder result;
 
 
-    Song songs[];
 
-    Document document;
+
+    Document document;      //document(pdf) from IText Library
     String FILE;
+    String line;
+
+    AppCompatCheckBox checkBox;     //select all checkbox
+    int FLAG=0;                     //flag to check the state of select all checkbox
+
+
+
+    ArrayList<Song> list;
+
+    SongAdapter s=new SongAdapter();
 
 
 
@@ -78,11 +96,13 @@ public class MainActivity extends AppCompatActivity {
         getSongList();
 
 
+
         Collections.sort(songList, new Comparator<Song>() {
             public int compare(Song a, Song b) {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
+
 
         songAdt = new SongAdapter(songList);
 
@@ -94,8 +114,42 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //share button
+
+
+        checkBox=(AppCompatCheckBox)findViewById(R.id.allcheck);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                    if(checkBox.isChecked()==true){
+
+                        FLAG=1;
+                        list=songAdt.getSongList();
+                        s.selectAll(FLAG,list);         //select all items
+
+                    }
+                    else{
+
+                        FLAG=0;
+                        list=songAdt.getSongList();
+                        s.selectAll(FLAG,list);}    //deselect all items
+
+
+                    songAdt.notifyDataSetChanged();     //refresh the recycler view items to update changes (VERY IMPORTANT)
+
+
+
+
+
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.icon_share);
@@ -106,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
                 // Click action
                 //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
                 //startActivity(intent);
-                new statusCheck().execute();
+                new statusCheck().execute();        //begin the async task to generate a pdf and and start result activity.
+
 
 
             }
@@ -115,10 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -154,23 +206,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class statusCheck extends AsyncTask<Void,Void,StringBuilder>{
 
 
-        ProgressDialog mProgressDialog;
+
+
+
+    private class statusCheck extends AsyncTask<Void,Void,StringBuilder> {
+
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            mProgressDialog = new ProgressDialog(MainActivity.this);
-            // Set progressdialog title
-            mProgressDialog.setTitle("Generating a shareable PDF");
-            // Set progressdialog message
-            mProgressDialog.setMessage("Almost there!");
-            mProgressDialog.setIndeterminate(false);
-            // Show progressdialog
-            mProgressDialog.show();
 
         }
 
@@ -179,8 +226,7 @@ public class MainActivity extends AppCompatActivity {
             result = new StringBuilder();
 
 
-
-            ArrayList<Song> songs= ((SongAdapter)songAdt).getSongList();
+            ArrayList<Song> songs = songAdt.getSongList();
 
 
             for (int i = 0; i < songs.size(); i++) {
@@ -190,52 +236,33 @@ public class MainActivity extends AppCompatActivity {
                     result.append(singleSong.getTitle().toString());
                     result.append("\n");
 
-
                 }
 
             }
+            ////// setup the pdf and insert data into it //////////
+            FILE = Environment.getExternalStorageDirectory().toString()
+                    + "/PDF/" + "playlist.pdf";
 
+            document = new Document(PageSize.A4);
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root + "/PDF");
+            myDir.mkdirs();
 
             try {
-                Thread.sleep(2000);
-
-
-                FILE = Environment.getExternalStorageDirectory().toString()
-                        + "/PDF/" + "playlist.pdf";
-
-
-                document = new Document(PageSize.A4);
-
-
-                String root = Environment.getExternalStorageDirectory().toString();
-                File myDir = new File(root + "/PDF");
-                myDir.mkdirs();
-
-                try {
-                    PdfWriter.getInstance(document, new FileOutputStream(FILE));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                document.open();
-
-
-
+                PdfWriter.getInstance(document, new FileOutputStream(FILE));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            document.open();
+
+
             return result;
         }
 
 
-
         @Override
         protected void onPostExecute(StringBuilder result) {
-
-
-
-            mProgressDialog.dismiss();
-            //displayToast(result);
 
 
 
@@ -244,76 +271,25 @@ public class MainActivity extends AppCompatActivity {
             addMetaData(document);
 
 
-
-
-
-
-            try{
+            try {
                 addTitlePage(document);
-            }catch (Exception e){
+
+            } catch (Exception e) {
                 e.printStackTrace();
-
             }
-
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/PDF/playlist.pdf");
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
 
             document.close();
 
 
+            Intent i = new Intent(getApplicationContext(), Results.class);
+            Bundle extras = new Bundle();
+            extras.putString("list", String.valueOf(result));
+
+            i.putExtras(extras);
+            startActivity(i);
+
+
         }
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ////////////////////////// DO the sharing part now /////////////////////////////
-
-    /*
-
-    public void shareIt() {
-//sharing implementation here
-
-
-
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-        sharingIntent.setType("text/plain");
-        String shareBody = "enter text to send";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
-    }
-
-
-        */
-
-
-
-
-    public void displayToast(StringBuilder result){
-        Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
-
     }
 
 
@@ -323,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
         document.addSubject("LOVE MUSIC");
 
     }
+
 
 
     public void addTitlePage(Document document) throws DocumentException{
@@ -356,11 +333,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    ///////////////////////UNUSED METHOD////////////////
+    public String read_file(Context context, String playlist) {
+        try {
+            FileInputStream fis = context.openFileInput(playlist);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            return "";
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        } catch (IOException e) {
+            return "";
+        }
 
 
-
+    }
 
 
 
 }
-

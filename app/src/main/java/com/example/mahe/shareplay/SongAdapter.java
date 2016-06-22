@@ -25,48 +25,40 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
 
     private ArrayList<Song> songs;
+//    public CheckBox box;
 
 
-
-
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView title,artist;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, artist;
         public CheckBox checkBox;
 
 
-
-
-
-        public MyViewHolder(View view){
+        public MyViewHolder(View view) {
             super(view);
-            title=(TextView)view.findViewById(R.id.song_title);
-            artist=(TextView)view.findViewById(R.id.song_artist);
-            checkBox=(CheckBox)view.findViewById(R.id.checkBox);
+            title = (TextView) view.findViewById(R.id.song_title);
+            artist = (TextView) view.findViewById(R.id.song_artist);
+            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 
 
         }
     }
 
 
+    public SongAdapter() {
+
+    }
 
 
-
-    public SongAdapter(ArrayList<Song> theSongs){
-        songs=theSongs;
+    public SongAdapter(ArrayList<Song> theSongs) {
+        songs = theSongs;
 
 
     }
 
 
-
-
-
-
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout,parent,false);
-
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
 
 
         return new MyViewHolder(itemView);
@@ -77,7 +69,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        Song song=songs.get(position);
+        Song song = songs.get(position);
 
         holder.title.setText(song.getTitle());
         holder.artist.setText(song.getArtist());
@@ -98,11 +90,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         });
 
 
-
-
-
-
-
     }
 
 
@@ -112,11 +99,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
 
-
-
-
-
-
     @Override
     public long getItemId(int arg0) {
         // TODO Auto-generated method stub
@@ -124,14 +106,26 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
 
-
-
-
-
-
     public ArrayList<Song> getSongList() {
         return songs;
     }
 
 
+
+    public void selectAll(int flag,ArrayList<Song> list) {
+        //ArrayList<Song> list;
+        //list=getSongList();
+
+        if (flag == 1) {
+            for (int i = 0; i < list.size(); i++) {
+
+                list.get(i).setSelected(true);
+            }
+        } else if(flag== 0) {
+            for(int i=0;i<list.size();i++)
+                list.get(i).setSelected(false);
+        }
+
+
+    }
 }

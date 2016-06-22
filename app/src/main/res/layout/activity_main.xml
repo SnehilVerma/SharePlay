@@ -15,12 +15,17 @@
 
 
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/allcheck"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:text="select all"
+            android:layout_marginLeft="280dp"
+            android:clickable="true"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:onClick="checkAll" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -32,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/yellow"
-        />
+        app:backgroundTint="@color/yellow" />
 
 </android.support.design.widget.CoordinatorLayout>
