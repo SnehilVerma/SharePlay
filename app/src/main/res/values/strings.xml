@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">SharePlay</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Select music to share</string>
+    <string name="slide_1_desc">Browse through your playlist</string>
+
+    <string name="slide_2_title">Share and Spread Love!</string>
+    <string name="slide_2_desc"> </string>
+
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
 </resources>
