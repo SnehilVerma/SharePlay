@@ -13,7 +13,7 @@
             android:id="@+id/output"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:padding="1px"
+            android:padding="5px"
 
             android:layout_gravity="center_horizontal" />
 
@@ -38,7 +38,9 @@
             android:layout_height="wrap_content"
             android:text="view pdf"
             android:id="@+id/button"
-            android:layout_marginLeft="20dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/mybutton"
+            android:layout_marginLeft="40dp"
             android:onClick="viewPdf" />
 
         <Button
@@ -46,7 +48,9 @@
             android:layout_height="wrap_content"
             android:text="Share now"
             android:id="@+id/button2"
-            android:layout_marginLeft="130dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/mybutton"
+            android:layout_marginLeft="120dp"
             android:onClick="shareIt" />
     </LinearLayout>
 
