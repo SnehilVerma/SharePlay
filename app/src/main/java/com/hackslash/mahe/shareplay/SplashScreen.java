@@ -1,9 +1,11 @@
-package com.example.mahe.shareplay;
+package com.hackslash.mahe.shareplay;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.mahe.shareplay.R;
 
 /**
  * Created by Snehil Verma on 6/25/2016.

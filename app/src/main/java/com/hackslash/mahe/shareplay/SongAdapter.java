@@ -1,18 +1,13 @@
-package com.example.mahe.shareplay;
+package com.hackslash.mahe.shareplay;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.mahe.shareplay.R;
 
 import java.util.ArrayList;
 

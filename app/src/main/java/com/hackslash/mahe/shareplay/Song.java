@@ -1,4 +1,4 @@
-package com.example.mahe.shareplay;
+package com.hackslash.mahe.shareplay;
 
 /**
  * Created by MAHE on 6/17/2016.

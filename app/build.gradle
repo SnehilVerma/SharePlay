@@ -5,9 +5,9 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.mahe.shareplay"
-        minSdkVersion 21
-        targetSdkVersion 21
+        applicationId "com.hackslash.mahe.shareplay"
+        minSdkVersion 17
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }

@@ -1,4 +1,4 @@
-package com.example.mahe.shareplay;
+package com.hackslash.mahe.shareplay;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.mahe.shareplay.R;
 
 public class WelcomeActivity extends AppCompatActivity {
 

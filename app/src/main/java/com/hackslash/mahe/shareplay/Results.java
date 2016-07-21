@@ -1,4 +1,4 @@
-package com.example.mahe.shareplay;
+package com.hackslash.mahe.shareplay;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -6,14 +6,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.mahe.shareplay.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ public class Results extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mresult);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
 
 
         userdata = new String[1];

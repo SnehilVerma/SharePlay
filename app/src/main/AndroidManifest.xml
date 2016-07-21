@@ -14,12 +14,12 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".Results">
+        <activity android:name="com.hackslash.mahe.shareplay.Results">
         </activity>
 
 
         <activity
-            android:name=".SplashScreen"
+            android:name="com.hackslash.mahe.shareplay.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -33,7 +33,7 @@
 
 
 
-        <activity android:name=".WelcomeActivity"
+        <activity android:name="com.hackslash.mahe.shareplay.WelcomeActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"
@@ -41,7 +41,7 @@
 
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.hackslash.mahe.shareplay.MainActivity"
             android:label="@string/title_activity_welcome"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
