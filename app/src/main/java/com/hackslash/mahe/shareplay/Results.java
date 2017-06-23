@@ -45,7 +45,7 @@ public class Results extends AppCompatActivity{
         user_input = getIntent().getExtras();
         finsongs=getIntent().getStringArrayListExtra("list");
         userdata[0] = user_input.getString("list2");
-        
+
         mlist = (ListView) findViewById(R.id.list);
 
         /*
