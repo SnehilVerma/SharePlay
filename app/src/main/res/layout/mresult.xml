@@ -16,7 +16,11 @@
             android:id="@+id/output"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginLeft="100dp"
+            android:background="@drawable/text_background"
+            android:text="My playlist"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
             android:padding="5px"
             android:textSize="20dp"
 
@@ -24,7 +28,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:headerDividersEnabled="false"
             android:id="@+id/list"
             android:layout_alignParentTop="true"
@@ -36,6 +40,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:layout_marginTop="20dp">
 
         <Button
@@ -43,9 +48,9 @@
             android:layout_height="wrap_content"
             android:text="view pdf"
             android:id="@+id/button"
-            android:textColor="#ffffff"
-            android:background="#ffe100"
-            android:layout_marginLeft="40dp"
+            android:textColor="#000000"
+            android:background="@drawable/button_background"
+
             android:onClick="viewPdf" />
 
         <Button
@@ -53,8 +58,8 @@
             android:layout_height="wrap_content"
             android:text="Share now"
             android:id="@+id/button2"
-            android:textColor="#ffffff"
-            android:background="#ffe100"
+            android:textColor="#000000"
+            android:background="@drawable/button_background"
             android:layout_marginLeft="120dp"
             android:onClick="shareIt" />
     </LinearLayout>

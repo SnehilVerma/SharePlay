@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                    android:elevation="10dp"
+
+                    android:background="@android:color/black"
+                  android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@android:color/white"
+            android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/layer1"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:text="Song Title"
+            android:textSize="20dp"
+            android:id="@+id/song_title"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:text="Song Artist"
+                android:id="@+id/song_artist"
+                android:layout_height="wrap_content"/>
+
+        <SeekBar
+            android:layout_marginTop="10dp"
+            android:id="@+id/seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/layer1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/pause"
+                android:id="@+id/pause"
+                android:layout_height="50dp"/>
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_marginLeft="30dp"
+                android:id="@+id/cancel"
+                android:src="@drawable/cancel"
+                android:layout_height="50dp"/>
+
+
+        </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>

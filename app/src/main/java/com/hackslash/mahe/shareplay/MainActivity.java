@@ -1,8 +1,11 @@
 package com.hackslash.mahe.shareplay;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,8 +17,17 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
+
+import com.example.mahe.shareplay.R;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,21 +40,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import android.net.Uri;
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.widget.Toast;
-
-
-import com.example.mahe.shareplay.R;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Document;
 
 
 
@@ -72,13 +69,14 @@ public class MainActivity extends AppCompatActivity {
     String line;
 
     AppCompatCheckBox checkBox;     //select all checkbox
+
     int FLAG=0;                     //flag to check the state of select all checkbox
 
 
 
     ArrayList<Song> list;
 
-    SongAdapter s=new SongAdapter();
+    SongAdapter s;
 
 
 
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        s=new SongAdapter(this);
         songView = (RecyclerView) findViewById(R.id.song_list);
         songList = new ArrayList<Song>();
 
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        songAdt = new SongAdapter(songList);
+        songAdt = new SongAdapter(songList,this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         songView.setLayoutManager(mLayoutManager);
@@ -113,12 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //share button
+
 
 
         checkBox=(AppCompatCheckBox)findViewById(R.id.allcheck);
+
+
+
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,12 +197,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist));
+                String songPath=musicCursor.getString(data);
+                songList.add(new Song(thisId, thisTitle, thisArtist,songPath));
 
 
 

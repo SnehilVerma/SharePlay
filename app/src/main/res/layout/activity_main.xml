@@ -6,33 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+
     tools:context="com.hackslash.mahe.shareplay.MainActivity"
     android:background="@color/cardview_light_background">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/white"
             android:text="SharePlay"/>
+
+
 
 
 
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/allcheck"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0097a7"
+            android:layout_marginLeft="260dp"
+            android:layout_marginTop="-30dp"
             android:text="Select All"
-            android:layout_marginLeft="280dp"
-            android:layout_marginTop="-40dp"
             android:clickable="true"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:onClick="checkAll" />
@@ -47,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="#f8f54c" />
+        app:backgroundTint="#ffcc00" />
 
 </android.support.design.widget.CoordinatorLayout>

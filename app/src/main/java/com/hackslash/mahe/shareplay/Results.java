@@ -46,7 +46,7 @@ public class Results extends AppCompatActivity{
         for (int i = 0; i < userdata.length; i++) {
             songlist.add(i, userdata[i]);
         }
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songlist);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, songlist);
 
 
         new shareIt().execute();
@@ -106,10 +106,9 @@ public class Results extends AppCompatActivity{
         protected void onPostExecute(Void aVoid) {
 
             TextView tv1 = (TextView) findViewById(R.id.output);
-            //ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            //tv1.setLayoutParams(params);
-            tv1.setText("MY  PLAYLIST");
+
+
 
 
             mlist.setAdapter(adapter);

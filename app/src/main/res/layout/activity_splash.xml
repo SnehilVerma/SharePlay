@@ -6,20 +6,19 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="350sp"
-        android:layout_height="350sp"
+        android:layout_width="320sp"
+        android:layout_height="320sp"
         android:layout_centerInParent="true"
         android:src="@drawable/music" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="35dp"
         android:textColor="#454545"
         android:gravity="center_horizontal"
-        android:text="SharePlay"
-        android:layout_marginTop="30sp"
-        android:layout_below="@+id/imgLogo"
+        android:text="By HackSlash"
+        android:layout_alignParentBottom="true"
+
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
