@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.mahe.shareplay.R;
+import com.hackslash.mahe.shareplay.Adapter.Result_Adapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,9 +25,11 @@ public class Results extends AppCompatActivity{
     Bundle user_input;
     String[] userdata;
     ListView mlist;
-    ArrayAdapter<String> adapter;
+    //ArrayAdapter<String> adapter;
+    Result_Adapter adapter;
 
     ArrayList<String> songlist = new ArrayList<>();
+    ArrayList<String> finsongs;
     // Button button;
 
 
@@ -41,12 +43,20 @@ public class Results extends AppCompatActivity{
 
         userdata = new String[1];
         user_input = getIntent().getExtras();
-        userdata[0] = user_input.getString("list");
+        finsongs=getIntent().getStringArrayListExtra("list");
+        userdata[0] = user_input.getString("list2");
+        
         mlist = (ListView) findViewById(R.id.list);
+
+        /*
         for (int i = 0; i < userdata.length; i++) {
             songlist.add(i, userdata[i]);
+
         }
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, songlist);
+        */
+        //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, songlist);
+        adapter=new Result_Adapter(this,R.layout.result_item,finsongs);
+
 
 
         new shareIt().execute();
@@ -106,11 +116,6 @@ public class Results extends AppCompatActivity{
         protected void onPostExecute(Void aVoid) {
 
             TextView tv1 = (TextView) findViewById(R.id.output);
-
-
-
-
-
             mlist.setAdapter(adapter);
 
 

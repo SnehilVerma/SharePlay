@@ -1,7 +1,6 @@
 package com.hackslash.mahe.shareplay;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,14 +28,8 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<Song> songList;
+
+    ArrayList<String> results;
 
 
     ArrayList<Path> files=new ArrayList<Path>();    // to store path of music files
@@ -244,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             Intent i = new Intent(getApplicationContext(), Results.class);
             Bundle extras = new Bundle();
-            extras.putString("list", String.valueOf(result));
+            extras.putStringArrayList("list",results);
+            extras.putString("list2", String.valueOf(result));
 
             i.putExtras(extras);
             startActivity(i);
@@ -269,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             result = new StringBuilder();
+            results=new ArrayList<>();
             resultpaths = new StringBuilder();
 
             ArrayList<Song> songs = songAdt.getSongList();
@@ -283,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
                     result.append(singleSong.getTitle().toString());
                     result.append("\n");
+                    results.add(singleSong.getTitle().toString());
 
 
                     resultpaths.append(singlePath.getPath().toString());        //storing the paths of the songs selected
@@ -347,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             result = new StringBuilder();
+            results=new ArrayList<>();
             resultpaths= new StringBuilder();
 
             ArrayList<Song> songs = songAdt.getSongList();
@@ -362,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
                     result.append(singleSong.getTitle().toString());
                     result.append("\n");
-
+                    results.add(singleSong.getTitle().toString());
 
 
                     resultpaths.append(singlePath.getPath().toString());        //storing the paths of the songs selected
@@ -474,28 +473,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    ///////////////////////UNUSED METHOD////////////////
-    public String read_file(Context context, String playlist) {
-        try {
-            FileInputStream fis = context.openFileInput(playlist);
-            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            return "";
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        } catch (IOException e) {
-            return "";
-        }
-
-
-    }
 
     public void openDialog(){
         alertDialog=new AlertDialog.Builder(this);
